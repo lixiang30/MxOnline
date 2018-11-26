@@ -16,6 +16,7 @@ class CustomBackend(ModelBackend):
             return None
 
 def user_login(request):
+    # 判断用户登录方式是否是POST
     if request.method == "POST":
         # 获取用户提交的用户名和密码
         user_name = request.POST.get('username', None)
