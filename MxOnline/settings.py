@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'operation',
     'xadmin',
     'crispy_forms',
+    'captcha',
 ]
 AUTH_USER_MODEL = 'users.UserProfile'
 
@@ -139,3 +140,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
 )
+
+EMAIL_HOST = "smtp.163.com"  # SMTP服务器主机
+EMAIL_PORT = 25             # 端口
+EMAIL_HOST_USER = "18875037237@163.com"       # 邮箱地址
+EMAIL_HOST_PASSWORD = "admin123"    # 密码
+EMAIL_USE_TLS= False
+EMAIL_FROM = "18875037237@163.com"            # 邮箱地址
