@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.backends import ModelBackend
-from .models import UserProfile
+from .models import UserProfile,EmailVerifyRecord
 from django.db.models import Q
 from django.views.generic.base import View
 from .forms import LoginForm,RegisterForm
@@ -19,6 +19,27 @@ class CustomBackend(ModelBackend):
                 return user
         except Exception as e:
             return None
+
+
+# 激活用户
+class ActiveUserView(View):
+    def get(self, request, active_code):
+        # 查询邮箱验证记录是否存在
+        all_record = EmailVerifyRecord.objects.filter(code = active_code)
+
+        if all_record:
+            for record in all_record:
+                # 获取到对应的邮箱
+                email = record.email
+                # 查找到邮箱对应的user
+                user = UserProfile.objects.get(email=email)
+                user.is_active = True
+                user.save()
+         # 验证码不对的时候跳转到激活失败页面
+        else:
+            return render(request,'active_fail.html')
+        # 激活成功跳转到登录页面
+        return render(request, "login.html", )
 
 
 class RegisterView(View):
@@ -37,11 +58,14 @@ class RegisterView(View):
             user_profile = UserProfile()
             user_profile.username = user_name
             user_profile.email = user_name
+            user_profile.is_active = False
             user_profile.password = make_password(pass_word)
             user_profile.save()
 
             send_register_email(user_name,"register")
-            pass
+            return render(request,'login.html')
+        else:
+            render(request,'register.html',{'register_form':register_form})
 
 
 class LoginView(View):
@@ -60,10 +84,14 @@ class LoginView(View):
 
             user = authenticate(username=user_name,password=pass_word)
             if user is not None:
-                login(request,user)
-                return render(request,"index.html")
+                if user.is_active:
+                    login(request,user)
+                    return render(request,"index.html")
+                else:
+                    return render(request, "login.html", {'msg': '用户名或密码错误！', 'login_form': login_form})
+            return render(request, "login.html", {'msg': '用户名或密码错误！', 'login_form': login_form})
         else:
-            return render(request,"login.html",{'msg':'用户名或密码错误！','login_form':login_form})
+            return render(request,"login.html",{'login_form':login_form})
 
 
 
