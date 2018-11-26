@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate,login
 from django.contrib.auth.backends import ModelBackend
 from .models import UserProfile
 from django.db.models import Q
+from django.views.generic.base import View
 
 class CustomBackend(ModelBackend):
     def authenticate(self, username=None, password=None, **kwargs):
@@ -15,7 +16,33 @@ class CustomBackend(ModelBackend):
         except Exception as e:
             return None
 
+class LoginView(View):
+    """
+    基于类的登录
+    """
+    def get(self,request):
+        return render(request,'login.html',{})
+
+    def post(self,request):
+        # 获取用户提交的用户名和密码
+        user_name = request.POST.get('username',None)
+        pass_word = request.POST.get('password',None)
+
+        user = authenticate(username=user_name,password=pass_word)
+        if user is not None:
+            login(request,user)
+            return render(request,"index.html")
+        else:
+            return render(request,"login.html",{'msg':'用户名或密码错误！'})
+
+
+
 def user_login(request):
+    """
+    基于函数的登录
+    :param request:
+    :return:
+    """
     # 判断用户登录方式是否是POST
     if request.method == "POST":
         # 获取用户提交的用户名和密码
