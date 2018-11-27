@@ -143,7 +143,7 @@
                             <label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
                             <input type="password" id="id_password" name="password" value="{{ register_form.password.value }}" placeholder="请输入6-20位非中文字符密码" />
                         </div>
-                        <div class="form-group marb8 captcha1 captcha1 {% if login_form.errors.captchal %}errorput{% endif %}">
+                        <div class="form-group marb8 captcha1 {% if login_form.errors.captchal %}errorput{% endif %}">
                             <label>验&nbsp;证&nbsp;码</label>
                             {{register_form.captcha}}
                         </div>
