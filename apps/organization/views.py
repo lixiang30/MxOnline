@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.views.generic import View
 from .models import CourseOrg,CityDict
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger # 分页功能需要导入的类
+from .forms import UserAskForm
+from django.http import HttpResponse
 
 class OrgView(View):
     """
@@ -58,3 +60,19 @@ class OrgView(View):
             "hot_orgs":hot_orgs,
             "sort":sort,
         })
+
+
+class AddUserAskView(View):
+    """
+    用户添加咨询
+    """
+    def post(self,request):
+        userask_form = UserAskForm(request.POST)
+        if userask_form.is_valid():
+            user_ask = userask_form.save(commit=True)
+            return HttpResponse("{'status':'success'}",content_type='application/json')
+        else:
+            return HttpResponse("{'status':'fail','msg':{0}}".format(userask_form.errors),content_type='application/json')
+            # 如果保存失败，返回json字符串,并将form的报错信息通过msg传递到前端
+            # return HttpResponse('{"status":"fail", "msg":"添加出错"}', content_type='application/json')
+
