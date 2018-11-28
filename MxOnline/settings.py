@@ -147,3 +147,6 @@ EMAIL_HOST_USER = "18875037237@163.com"       # 邮箱地址
 EMAIL_HOST_PASSWORD = "admin123"    # 密码
 EMAIL_USE_TLS= False
 EMAIL_FROM = "18875037237@163.com"            # 邮箱地址
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
