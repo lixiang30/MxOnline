@@ -53,9 +53,9 @@
 		<div class="layout">
 			<div class="head">
 				<ul class="tab_header">
-					<li class="active"><a href="?district=&price=all&order_by=time">全部</a> </li>
-					<li ><a href="?district=&price=all&order_by=hot">学习人数 &#8595;</a></li>
-					<li ><a href="?district=&price=all&order_by=most_contract">课程数 &#8595;</a></li>
+					<li class="{% if sort == '' %}active{% endif %}"><a href="?ct={{category}}&city={{city_id}}">全部</a> </li>
+					<li class="{% if sort == 'students' %}active{% endif %}"><a href="?sort=students&ct={{category}}&city={{city_id}}">学习人数 &#8595;</a></li>
+					<li class="{% if sort == 'courses' %}active{% endif %}"><a href="?sort=courses&ct={{category}}&city={{city_id}}">课程数 &#8595;</a></li>
 				</ul>
 			</div>
                 {% for course_org in all_orgs.object_list %}
