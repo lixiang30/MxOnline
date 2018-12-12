@@ -38,4 +38,7 @@ urlpatterns = [
 
     url('^org/',include('organization.urls',namespace='org')), # 课程机构url设置
 
+    #课程相关url配置
+    url(r'^course/',include('courses.urls',namespace="course")),
+
 ]
