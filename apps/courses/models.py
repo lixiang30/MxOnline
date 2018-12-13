@@ -18,10 +18,18 @@ class Course(models.Model):
     image = models.ImageField(verbose_name="封面图",upload_to="courses/%Y/%m",max_length=100)
     click_nums = models.IntegerField(verbose_name="点击数",default=0)
     add_time = models.DateTimeField(verbose_name="添加时间",default=datetime.now,)
+    category = models.CharField(max_length=20,verbose_name="课程类别",default="python开发")
 
     class Meta:
         verbose_name = "课程"
         verbose_name_plural = verbose_name
+
+    def get_zj_nums(self):
+        #　获取课程章节数
+        return self.lesson_set.all().count()
+
+    def get_learn_users(self):
+        return self.usercourse_set.all()[:5]
 
     def __str__(self):
         return self.name

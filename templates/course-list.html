@@ -29,11 +29,11 @@
 					<div class="group_list">
                             {% for course in all_courses.object_list %}
                             <div class="box">
-                                <a href="/group/groupdetail/15/">
+                                <a href="{% url 'course:course_detail' course.id %}">
                                     <img width="280" height="350" class="scrollLoading" src="{{ MEDIA_URL }}{{ course.image }}"/>
                                 </a>
                                 <div class="des">
-                                    <a href="/group/groupdetail/15/">
+                                    <a href="{% url 'course:course_detail' course.id %}">
                                         <h2>{{ course.name }}</h2>
                                     </a>
                                     <span class="fl">时长：<i class="key">{{ course.learn_times }}小时</i></span>
