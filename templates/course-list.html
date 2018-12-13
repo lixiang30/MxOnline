@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}课程机构列表页－慕学在线网{% endblock %}
+{% load staticfiles %}
+{% block custom_bread %}
+<section>
+    <div class="wp">
+        <ul class="crumbs">
+            <li><a href="/">首页</a></li>
+            <li>公开课</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section>
+	<div class="wp">
+		<div class="list" style="margin-top:0;">
+			<div class="left layout">
+				<div class="head">
+					<ul class="tab_header">
+						<li class="active"><a href="?order_by=time&is_expire=">最新 </a></li>
+						<li ><a href="?order_by=hot&is_expire=">最热门</a></li>
+						<li ><a href="?order_by=most_join&is_expire=">参与人数</a></li>
+					</ul>
+				</div>
+                <div id="inWindow">
+                    <div class="tab_cont " id="content">
+					<div class="group_list">
+                            {% for course in all_courses %}
+                            <div class="box">
+                                <a href="/group/groupdetail/15/">
+                                    <img width="280" height="350" class="scrollLoading" src="{{ MEDIA_URL }}{{ course.image }}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="/group/groupdetail/15/">
+                                        <h2>{{ course.name }}</h2>
+                                    </a>
+                                    <span class="fl">时长：<i class="key">{{ course.learn_times }}小时</i></span>
+                                    <span class="fr">学习人数：{{ course.students }}&nbsp;&nbsp;</span>
+                                </div>
+                                <div class="bottom">
+                                    <a href="/company/14/"><span class="fl">来自{{ course.course_org.name }}</span></a>
+                                    <span class="star fr  notlogin
+                                        " data-favid="15">
+                                        {{ course.fav_nums }}
+                                    </span>
+                                </div>
+                            </div>
+                            {% endfor %}
+					</div>
+                    <div class="pageturn">
+                        <ul class="pagelist">
+                                        <li class="active"><a href="?page=1">1</a></li>
+                        </ul>
+                    </div>
+				</div>
+                </div>
+			</div>
+			<div class="right layout">
+				<div class="head">热门课程推荐</div>
+				<div class="group_recommend">
+                    <dl>
+						<dt>
+							<a target="_blank" href="{{ ecmall_ad.url }}">
+								<img width="240" height="220" class="scrollLoading" data-url="http://img.mukewang.com/56a88ef50001863e06000338-240-135.jpg" src="{% static "images/pixel.gif" %}"/>
+							</a>
+						</dt>
+						<dd>
+							<a target="_blank" href="{{ ecmall_ad.url }}"><h2> java开发</h2></a>
+							<span class="fl">优惠价：<i class="key">￥200</i></span>
+						</dd>
+					</dl>
+
+					<dl>
+						<dt>
+							<a target="_blank" href="{{ ecmall_ad.url }}">
+								<img width="240" height="220" class="scrollLoading" data-url="http://img.mukewang.com/56a88ef50001863e06000338-240-135.jpg" src="{% static "images/pixel.gif" %}"/>
+							</a>
+						</dt>
+						<dd>
+							<a target="_blank" href="{{ ecmall_ad.url }}"><h2> java开发</h2></a>
+							<span class="fl">优惠价：<i class="key">￥200</i></span>
+						</dd>
+					</dl>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+
