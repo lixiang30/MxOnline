@@ -19,9 +19,9 @@
 			<div class="left layout">
 				<div class="head">
 					<ul class="tab_header">
-						<li class="active"><a href="?order_by=time&is_expire=">最新 </a></li>
-						<li ><a href="?order_by=hot&is_expire=">最热门</a></li>
-						<li ><a href="?order_by=most_join&is_expire=">参与人数</a></li>
+						<li {% if sort == '' %}class="active"{% endif %}><a href="?sort=">最新 </a></li>
+						<li {% if sort == 'hot' %}class="active" {% endif %}><a href="?sort=hot">最热门</a></li>
+						<li {% if sort == 'students' %}class="active" {% endif %}><a href="?sort=students">参与人数</a></li>
 					</ul>
 				</div>
                 <div id="inWindow">
@@ -82,29 +82,20 @@
 			<div class="right layout">
 				<div class="head">热门课程推荐</div>
 				<div class="group_recommend">
+
+					{% for hot_course in hot_courses %}
                     <dl>
 						<dt>
 							<a target="_blank" href="{{ ecmall_ad.url }}">
-								<img width="240" height="220" class="scrollLoading" data-url="http://img.mukewang.com/56a88ef50001863e06000338-240-135.jpg" src="{% static "images/pixel.gif" %}"/>
+								<img width="240" height="220" class="scrollLoading" src="{{ MEDIA_URL }}{{ hot_course.image }}"/>
 							</a>
 						</dt>
 						<dd>
-							<a target="_blank" href="{{ ecmall_ad.url }}"><h2> java开发</h2></a>
-							<span class="fl">优惠价：<i class="key">￥200</i></span>
+							<a target="_blank" href="{{ ecmall_ad.url }}"><h2> {{ hot_course.name }}</h2></a>
+							<span class="fl">难度：<i class="key">{{ hot_course.get_degree_display }}</i></span>
 						</dd>
 					</dl>
-
-					<dl>
-						<dt>
-							<a target="_blank" href="{{ ecmall_ad.url }}">
-								<img width="240" height="220" class="scrollLoading" data-url="http://img.mukewang.com/56a88ef50001863e06000338-240-135.jpg" src="{% static "images/pixel.gif" %}"/>
-							</a>
-						</dt>
-						<dd>
-							<a target="_blank" href="{{ ecmall_ad.url }}"><h2> java开发</h2></a>
-							<span class="fl">优惠价：<i class="key">￥200</i></span>
-						</dd>
-					</dl>
+					{% endfor %}
 
 				</div>
 			</div>

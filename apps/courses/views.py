@@ -10,7 +10,17 @@ from .models import Course
 
 class CourseListView(View):
     def get(self,request):
-        all_courses = Course.objects.all()
+        all_courses = Course.objects.all().order_by("-add_time")
+
+        hot_courses = Course.objects.all().order_by("-click_nums")[:3]
+
+        # 课程排序
+        sort = request.GET.get('sort', '')
+        if sort:
+            if sort == "students":
+                all_courses = all_courses.order_by("-students")
+            elif sort == "hot":
+                all_courses = all_courses.order_by("-click_nums")
 
         # 　对课程机构进行分页
         try:
@@ -23,4 +33,6 @@ class CourseListView(View):
 
         return render(request,"course-list.html",{
             "all_courses":courses,
+            'sort':sort,
+            'hot_courses':hot_courses,
         })
