@@ -39,7 +39,7 @@
                             <li><span class="pram word3">章&nbsp;节&nbsp;数：</span><span>{{ course.get_zj_nums }}</span></li>
                             <li><span class="pram word3">课程类别：</span><span title="">{{ course.category }}</span></li>
 							<li class="piclist"><span class="pram word4">学习用户：</span>
-								{%  for user_users in course.get_learn_users %}
+								{%  for user_course in course.get_learn_users %}
 								<span class="pic"><img width="40" height="40" src="{{ MEDIA_URL }}{{ user_course.user.image }}"/></span>
 								{% endfor %}
 							</li>
@@ -47,9 +47,9 @@
 						<div class="btns">
 							<div class="btn colectgroupbtn  notlogin
                                   "data-favid="15" id="jsLeftBtn">
-                                  收藏
+                                  {% if has_fav_course %}已收藏{% else %}收藏{% endif %}
                             </div>
-                                <div class="buy btn"><a style="color: white" href="course-video.html">开始学习</a></div>
+                                <div class="buy btn"><a style="color: white" href="{% url 'course:course_info' course.id %}">开始学习</a></div>
 						</div>
 					</div>
                     <div class="group-share-box">
@@ -83,7 +83,7 @@
                     </a>
 					<div class="btn  notlogin
 					     "data-favid="14" id="jsRightBtn">
-                         收藏
+                         {% if has_fav_org %}已收藏{% else %}收藏{% endif %}
                     </div>
 					<div class="clear">
 						<ul>
@@ -145,6 +145,49 @@
 		</div>
 	</div>
 </section>
+
+{% endblock %}
+
+{% block custom_js %}
+
+<script type="text/javascript">
+//收藏分享
+function add_fav(current_elem, fav_id, fav_type){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url "org:add_fav" %}",
+        data:{'fav_id':fav_id, 'fav_type':fav_type},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    window.location.href="/login/";
+                }else{
+                    alert(data.msg)
+                }
+
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+            }
+        },
+    });
+}
+
+$('#jsLeftBtn').on('click', function(){
+    add_fav($(this), {{ course.id }}, 1);
+});
+
+$('#jsRightBtn').on('click', function(){
+    add_fav($(this), {{ course.course_org.id }}, 2);
+});
+
+
+</script>
+
 
 {% endblock %}
 
