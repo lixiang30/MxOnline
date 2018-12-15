@@ -19,6 +19,7 @@ class Course(models.Model):
     click_nums = models.IntegerField(verbose_name="点击数",default=0)
     add_time = models.DateTimeField(verbose_name="添加时间",default=datetime.now,)
     category = models.CharField(max_length=20,verbose_name="课程类别",default="python开发")
+    tag = models.CharField(default="",verbose_name="课程标签",max_length=10)
 
     class Meta:
         verbose_name = "课程"
