@@ -5,7 +5,7 @@ from django.views.generic.base import View
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger # 分页功能需要导入的类
 
-from .models import Course
+from .models import Course,CourseResource
 from operation.models import UserFavorite
 
 
@@ -81,8 +81,10 @@ class CourseInfoView(View):
     """
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+        all_resources = CourseResource.objects.filter(course=course)
         return render(request,"course-video.html",{
             "course":course,
+            "course_resource":all_resources,
         })
 
 

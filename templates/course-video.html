@@ -36,21 +36,21 @@
             <div style="height: 15px" class="path">
             </div>
             <div class="hd">
-                <h2 class="l">Spring入门篇</h2>
+                <h2 class="l">{{　course.name }}</h2>
             </div>
             <div class="statics clearfix">
                 <div class="static-item ">
-                    <span class="meta-value"><strong>高级</strong></span>
+                    <span class="meta-value"><strong>{{　course.get_degree_display }}</strong></span>
                     <span class="meta">难度</span>
                     <em></em>
                 </div>
                 <div class="static-item static-time">
-                    <span class="meta-value"><strong> 7</strong>小时<strong> 0</strong>分</span>
+                    <span class="meta-value">{{ course.learn_times }}小时</span>
                     <span class="meta">时长</span>
                     <em></em>
                 </div>
                 <div class="static-item">
-                    <span class="meta-value"><strong>81840</strong></span>
+                    <span class="meta-value"><strong>{{　course.students }}</strong></span>
                     <span class="meta">学习人数</span>
                     <em></em>
                 </div>
@@ -102,55 +102,33 @@
                     <div class="box mb40">
                         <h4>资料下载</h4>
                         <ul class="downlist">
+                            {% for course_resource in course_resource %}
                             <li>
-                                <span ><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;Junit的jar包</span>
-                                <a href="http://img.mukewang.com/down/54164c7700013e9b00000000.rar" class="downcode" target="_blank" download="" data-id="274" title="">下载</a>
+                                <span ><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;{{ course_resource.name }}</span>
+                                <a href="{{ MEDIA_URL }}{{ course_resource.download }}" class="downcode" target="_blank" download="" data-id="274" title="">下载</a>
                             </li>
-                            <li>
-                                <span><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;spring jar包 1</span>
-                                <a href="http://img.mukewang.com/down/54164cb80001d97000000000.rar" class="downcode" target="_blank" download="" data-id="275" title="">下载</a>
-                            </li>
-                            <li>
-                                <span><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;spring jar包2</span>
-                                <a href="http://img.mukewang.com/down/54164ce3000171ba00000000.rar" class="downcode" target="_blank" download="" data-id="276" title="">下载</a>
-                            </li>
-                            <li>
-                                <span><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;Spring前四章源代码</span>
-                                <a href="http://img.mukewang.com/down/5427bf120001c7b000000000.rar" class="downcode" target="_blank" download="" data-id="294" title="">下载</a>
-                            </li>
-                            <li>
-                                <span><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;spring javadoc-api</span>
-                                <a href="http://img.mukewang.com/down/543f201f0001972a00000000.zip" class="downcode" target="_blank" download="" data-id="318" title="">下载</a>
-                            </li>
-                            <li>
-                                <span><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;spring-framework-reference</span>
-                                <a href="http://img.mukewang.com/down/543f203f0001252700000000.rar" class="downcode" target="_blank" download="" data-id="319" title="">下载</a>
-                            </li>
-                            <li>
-                                <span><i class="aui-iconfont aui-icon-file"></i>&nbsp;&nbsp;Spring所有章节源码</span>
-                                <a href="http://img.mukewang.com/down/545040d70001107900000000.zip" class="downcode" target="_blank" download="" data-id="329" title="">下载</a>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="box mb40">
                         <h4>讲师提示</h4>
                         <div class="teacher-info">
                             <a href="/u/315464/courses?sort=publish" target="_blank">
-                                <img src='http://img.mukewang.com/user/5412609f0001c0c004800480-80-80.jpg' width='80' height='80' />
+                                <img src='{{　MEDIA_URL}}{{　course.teacher.image }}' width='80' height='80' />
                             </a>
         <span class="tit">
           <a href="/u/315464/courses?sort=publish" target="_blank">moocer</a>
         </span>
-                            <span class="job">JAVA开发工程师</span>
+                            <span class="job">{{ course.teacher.work_position }}</span>
                         </div>
                         <div class="course-info-tip">
                             <dl class="first">
                                 <dt>课程须知</dt>
-                                <dd class="autowrap">Java的高级课程，适合对Java基础知识应用自如，并熟悉MVC架构的小伙伴们。如果想成为一名Java工程师，这门课程是一定要学哒。</dd>
+                                <dd class="autowrap">{{　course.youneed_know }}</dd>
                             </dl>
                             <dl>
                                 <dt>老师告诉你能学到什么？</dt>
-                                <dd class="autowrap">掌握依赖注入、IOC和AOP的概念，并能进行简单应用。</dd>
+                                <dd class="autowrap">{{　course.teacher_tell }}</dd>
                             </dl>
                         </div>
                     </div>

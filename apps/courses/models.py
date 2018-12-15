@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from datetime import datetime
-from organization.models import CourseOrg
+from organization.models import CourseOrg,Teacher
 
 class Course(models.Model):
     #
@@ -20,6 +20,9 @@ class Course(models.Model):
     add_time = models.DateTimeField(verbose_name="添加时间",default=datetime.now,)
     category = models.CharField(max_length=20,verbose_name="课程类别",default="python开发")
     tag = models.CharField(default="",verbose_name="课程标签",max_length=10)
+    teacher = models.ForeignKey(Teacher, verbose_name='讲师', null=True, blank=True, on_delete=models.CASCADE)
+    youneed_know = models.CharField(verbose_name='课程须知', max_length=300, default='')
+    teacher_tell = models.CharField(verbose_name='老师告诉你', max_length=300, default='')
 
     class Meta:
         verbose_name = "课程"
