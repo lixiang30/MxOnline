@@ -6,7 +6,8 @@ from django.views.generic.base import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger # 分页功能需要导入的类
 
 from .models import Course,CourseResource
-from operation.models import UserFavorite,CourseComments
+from operation.models import UserFavorite,CourseComments,UserCourse
+from utils.mixin_utils import LoginRequiredMixin # 我要学习点击后关联用户，该同学还学过．登录验证用
 
 
 class CourseListView(View):
@@ -75,20 +76,40 @@ class CourseDetailView(View):
 
 
 
-class CourseInfoView(View):
+class CourseInfoView(LoginRequiredMixin,View):
     """
     课程章节
     """
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+
+        #　查询用户是否关联了课程
+        user_courses = UserCourse.objects.filter(user=request.user,course=course)
+        if not user_courses:
+            user_course = UserCourse(user=request.user,course=course)
+            user_course.save()
+
+        # 相关课程推荐
+        # 找到学习这门课的所有用户
+        user_cousers = UserCourse.objects.filter(course=course)
+        # 找到学习这门课的所有用户的id
+        user_ids = [user_couser.user.id for user_couser in user_cousers]
+        # 通过所有用户的id,找到所有用户学习过的所有过程
+        all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)
+        # 取出所有课程id
+        course_ids = [user_couser.course.id for user_couser in user_cousers]
+        # 通过所有课程的id,找到所有的课程，按点击量去五个
+        relate_courses = Course.objects.filter(id__in=course_ids).order_by("-click_nums")[:5]
+
         all_resources = CourseResource.objects.filter(course=course)
         return render(request,"course-video.html",{
             "course":course,
             "course_resource":all_resources,
+            "relate_courses":relate_courses,
         })
 
 
-class CommentsView(View):
+class CommentsView(LoginRequiredMixin,View):
     def get(self,request,course_id):
         course = Course.objects.get(id=int(course_id))
         all_resources = CourseResource.objects.filter(course=course)
@@ -97,18 +118,6 @@ class CommentsView(View):
             "course":course,
             "course_resources":all_resources,
             "all_comments":all_comments,
-        })
-
-class CommentsView(View):
-    '''课程评论'''
-    def get(self, request, course_id):
-        course = Course.objects.get(id=int(course_id))
-        all_resources = CourseResource.objects.filter(course=course)
-        all_comments = CourseComments.objects.all()
-        return render(request, "course-comment.html", {
-            "course": course,
-            "course_resources": all_resources,
-            'all_comments':all_comments,
         })
 
 
